@@ -1,0 +1,13 @@
+{
+  "name": "brain",
+  "private": true,
+  "scripts": {
+    "start": "meteor run"
+  },
+  "dependencies": {
+    "brain.js": "^0.7.0",
+    "meteor-node-stubs": "~0.2.0",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2"
+  }
+}
