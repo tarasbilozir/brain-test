@@ -6,6 +6,12 @@ body {
 
 canvas#canvas {
   cursor: pointer;
-  /*width: 200px;
-  height: 200px;*/
+  /*width: 30%;
+  height: 30%;*/
+}
+
+.container {
+  /*display: inline-block;*/
+  max-width: 300px;
+  margin: 0 auto;
 }

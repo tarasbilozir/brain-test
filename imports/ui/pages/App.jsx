@@ -42,19 +42,17 @@ export default class App extends React.Component {
   }
 
   render() {
-    return (<div>
-      <div>
-        <h1>Hello!</h1>
+    return (<div className="container">
+      <h1>Hello!</h1>
 
-        <Canvas ref="canvas" dim={this.props.dim} />
-        <button onClick={this.clearCanvas.bind(this)}>Clear</button>
+      <Canvas ref="canvas" dim={this.props.dim} className="container" />
+      <button onClick={this.clearCanvas.bind(this)}>Clear</button>
 
-        <Radio ref="radio" choice={[':)', ':|', ':(']} />
-        <button onClick={this.pushToDataset.bind(this)}>Add to set</button>
+      <Radio ref="radio" choice={[':)', ':|', ':(']} className="container" />
+      <button onClick={this.pushToDataset.bind(this)}>Add to set</button>
 
-        <button onClick={this.train.bind(this)}>Train</button>
-        <button onClick={this.run.bind(this)}>Run</button>
-      </div>
+      <button onClick={this.train.bind(this)}>Train</button>
+      <button onClick={this.run.bind(this)}>Run</button>
     </div>);
   }
 }

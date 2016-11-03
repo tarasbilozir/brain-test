@@ -12,79 +12,48 @@ export default class Canvas extends React.Component {
   startPaint(event) {
     this.setState({ isDrawing: true });
 
-
-
     const ctx = this.refs.canvas.getContext('2d');
-
-    // global.e = event;
 
     const x = event.nativeEvent.offsetX;
     const y = event.nativeEvent.offsetY;
-
-
-
-
 
     ctx.moveTo(x,y);
 
     ctx.fillRect(x,y,1,1);
     ctx.stroke();
     ctx.lineJoin = ctx.lineCap = 'round';
-
-
-    // ctx.beginPath();
-    // ctx.arc(x,y,1,0,2*Math.PI);
-    // ctx.stroke();
   }
 
   paint(event) {
     event.persist();
-    // const canvas = document.getElementById('canvas');
-
     if (this.state.isDrawing) {
       const ctx = this.refs.canvas.getContext('2d');
 
-      // global.e = event;
-
       const x = event.nativeEvent.offsetX;
       const y = event.nativeEvent.offsetY;
-      // console.log(event,x,y)
 
       const pixel = ctx.getImageData(x, y, 1, 1);
       const data = pixel.data;
       const rgba = 'rgba(' + data[0] + ',' + data[1] +
                  ',' + data[2] + ',' + (data[3] / 255) + ')';
 
-      // console.log(rgba);
-
-
       ctx.lineTo(x, y);
       ctx.stroke();
-
-
     }
 
   }
 
   clearCanvas() {
-
-    // console.log(this.props.dim);
     const ctx = this.refs.canvas.getContext('2d');
     ctx.clearRect(0, 0, this.props.dim, this.props.dim);
-
 
     ctx.beginPath(); // It necessary for correct clearing the canvas
   }
 
   getDataset() {
-
     const ctx = this.refs.canvas.getContext('2d');
 
-    // ctx.drawImage($('img')[0], 0,0)
     ctx.getImageData(0,0,this.props.dim,this.props.dim)
-
-
-
 
     const pixels = ctx.getImageData(0, 0, this.props.dim, this.props.dim).data;
     const w = ctx.getImageData(0, 0, this.props.dim, this.props.dim).width;
@@ -101,8 +70,6 @@ export default class Canvas extends React.Component {
 
       arr.push({ r, g, b, a, x });
     }
-    // console.log(arr);
-    // console.log(arr.map(e => e.a/255 > 0.5 && 1 || 0))
     return arr;
   }
 
