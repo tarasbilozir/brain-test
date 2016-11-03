@@ -1,8 +1,5 @@
 import React from 'react';
 import Canvas from '/imports/ui/components/Canvas.jsx';
-import brain from 'brain';
-
-// import img from '/public/0.js';
 
 
 export default class App extends React.Component {
