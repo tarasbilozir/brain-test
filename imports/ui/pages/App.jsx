@@ -1,6 +1,8 @@
 import React from 'react';
 import Canvas from '/imports/ui/components/Canvas.jsx';
 
+import brain from 'brain';
+
 
 export default class App extends React.Component {
   constructor(props) {
@@ -46,7 +48,7 @@ export default class App extends React.Component {
 
 
     this.state.dataset.push({
-      input: arr.map(e => e.a/255 > 0.5 && 1 || 0),
+      input: arr.map(item => item.a / 255),
       output: this.state.mood
     });
     console.log(this.state.dataset);
@@ -62,7 +64,7 @@ export default class App extends React.Component {
   }
 
   run() {
-    global.res = net.run(this.refs.canvas.getDataset().map(e => e.a/255 > 0.5 && 1 || 0));
+    global.res = net.run(this.refs.canvas.getDataset().map(item => item.a / 255));
     console.log(res);
   }
 

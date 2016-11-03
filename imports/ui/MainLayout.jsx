@@ -1,5 +1,4 @@
 import React from 'react';
-import brain from 'brain';
 
 import App from '/imports/ui/pages/App.jsx';
 
