@@ -14,6 +14,7 @@ export default class App extends React.Component {
 
     this.state = {
       isDrawing: false,
+      mood: [0, 0, 0],
       dataset: [],
     }
   }
@@ -90,9 +91,11 @@ export default class App extends React.Component {
     global.e = event;
 
     this.setState({
-      smiles: event.target.name === 'smiles',
-      indifferent: event.target.name === 'indifferent',
-      cry: event.target.name === 'cry',
+      mood: [
+        event.target.name === 'smiles' && 1 || 0,
+        event.target.name === 'indifferent' && 1 || 0,
+        event.target.name === 'cry' && 1 || 0,
+      ]
     });
 
     console.log(this.refs)
@@ -160,9 +163,9 @@ export default class App extends React.Component {
 
       <form onSubmit={this.pushToDataset.bind(this)}>
         <div onClick={this.setMood.bind(this)}>
-          <input type="radio" name="smiles" ref="smiles" checked={this.state.smiles} />:)
-          <input type="radio" name="indifferent" ref="indifferent" checked={this.state.indifferent} />:|
-          <input type="radio" name="cry" ref="cry" checked={this.state.cry} />:(
+          <input type="radio" name="smiles" ref="smiles" checked={this.state.mood[0]} />:)
+          <input type="radio" name="indifferent" ref="indifferent" checked={this.state.mood[1]} />:|
+          <input type="radio" name="cry" ref="cry" checked={this.state.mood[2]} />:(
         </div>
         <button>Add to set</button>
       </form>
