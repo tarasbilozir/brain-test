@@ -18,14 +18,11 @@ export default class App extends React.Component {
     this.refs.canvas.clearCanvas();
   }
 
-  pushToDataset(event) {
-    event.preventDefault();
-
-    const arr = this.refs.canvas.getDataset();
+  pushToDataset() {
 
     this.state.dataset.push({
-      input: arr.map(item => item.a / 255),
-      output: this.refs.radio.state.mood
+      input: this.refs.canvas.getDataset().map(item => item.a / 255),
+      output: this.refs.radio.getChoice()
     });
     console.log(this.state.dataset);
 
@@ -45,7 +42,6 @@ export default class App extends React.Component {
   }
 
   render() {
-
     return (<div>
       <div>
         <h1>Hello!</h1>
@@ -53,11 +49,8 @@ export default class App extends React.Component {
         <Canvas ref="canvas" dim={this.props.dim} />
         <button onClick={this.clearCanvas.bind(this)}>Clear</button>
 
-
-        <form onSubmit={this.pushToDataset.bind(this)}>
-          <Radio ref="radio" mood={[':)', ':|', ':(', ':D']} />
-          <button>Add to set</button>
-        </form>
+        <Radio ref="radio" choice={[':)', ':|', ':(']} />
+        <button onClick={this.pushToDataset.bind(this)}>Add to set</button>
 
         <button onClick={this.train.bind(this)}>Train</button>
         <button onClick={this.run.bind(this)}>Run</button>
