@@ -2,12 +2,19 @@
 
 body {
   margin: 0 auto;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 20px;
 }
 
 canvas#canvas {
   cursor: pointer;
   /*width: 30%;
   height: 30%;*/
+  z-index: 100;
+}
+
+canvas#canvas2 {
+  position: absolute;
 }
 
 .container {

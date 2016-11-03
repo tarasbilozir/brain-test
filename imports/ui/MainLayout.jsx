@@ -6,7 +6,7 @@ export default class MainLayout extends React.Component {
 
   render() {
     return (<div>
-      <App dim={20} />
+      <App dim={100} netInputDim={20} />
     </div>);
   }
 }
