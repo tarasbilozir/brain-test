@@ -1,5 +1,6 @@
 import React from 'react';
 import Canvas from '/imports/ui/components/Canvas.jsx';
+import Radio from '/imports/ui/components/Radio.jsx';
 
 import brain from 'brain';
 
@@ -9,47 +10,22 @@ export default class App extends React.Component {
     super(props);
 
     this.state = {
-      // isDrawing: false,
-      mood: [0, 0, 0],
       dataset: [],
     }
   }
 
-
-
-  setMood(event) {
-    event.persist();
-    global.e = event;
-
-    this.setState({
-      mood: [
-        event.target.name === 'smiles' && 1 || 0,
-        event.target.name === 'indifferent' && 1 || 0,
-        event.target.name === 'cry' && 1 || 0,
-      ]
-    });
-
-    console.log(this.refs)
-  }
-
   clearCanvas() {
-    // this.refs.canvas.clearCanvas.bind(this);
-    // console.log(this);
     this.refs.canvas.clearCanvas();
   }
 
   pushToDataset(event) {
     event.preventDefault();
-    // const canvas = document.getElementById('canvas');
-
 
     const arr = this.refs.canvas.getDataset();
 
-
-
     this.state.dataset.push({
       input: arr.map(item => item.a / 255),
-      output: this.state.mood
+      output: this.refs.radio.state.mood
     });
     console.log(this.state.dataset);
 
@@ -69,26 +45,17 @@ export default class App extends React.Component {
   }
 
   render() {
-    // console.log(React.Children.only(this.props.children));
-    // global.R = React;
-    // global.C = this.props;
 
     return (<div>
       <div>
         <h1>Hello!</h1>
 
-        <div>
-          <Canvas ref="canvas" dim={this.props.dim} />
-        </div>
+        <Canvas ref="canvas" dim={this.props.dim} />
         <button onClick={this.clearCanvas.bind(this)}>Clear</button>
 
 
         <form onSubmit={this.pushToDataset.bind(this)}>
-          <div onClick={this.setMood.bind(this)}>
-            <input type="radio" name="smiles" ref="smiles" checked={this.state.mood[0]} />:)
-            <input type="radio" name="indifferent" ref="indifferent" checked={this.state.mood[1]} />:|
-            <input type="radio" name="cry" ref="cry" checked={this.state.mood[2]} />:(
-          </div>
+          <Radio ref="radio" mood={[':)', ':|', ':(', ':D']} />
           <button>Add to set</button>
         </form>
 
