@@ -1,5 +1,9 @@
 /* CSS declarations go here */
 
+body {
+  margin: 0 auto;
+}
+
 canvas#canvas {
   cursor: pointer;
   /*width: 200px;

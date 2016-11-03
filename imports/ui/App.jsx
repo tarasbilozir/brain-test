@@ -59,34 +59,43 @@ export default class App extends React.Component {
   }
 
   train() {
+    global.net = new brain.NeuralNetwork();
 
+    console.log(net.train(this.state.dataset));
   }
 
+  run() {
+    global.res = net.run(this.refs.canvas.getDataset().map(e => e.a/255 > 0.5 && 1 || 0));
+    console.log(res);
+  }
 
   render() {
     // console.log(React.Children.only(this.props.children));
     // global.R = React;
     // global.C = this.props;
-    console.log(this.refs);
 
     return (<div>
-      <h1>Hello!</h1>
-
       <div>
-        <Canvas ref="canvas" dim={this.props.dim} />
-      </div>
+        <h1>Hello!</h1>
 
-      <form onSubmit={this.pushToDataset.bind(this)}>
-        <div onClick={this.setMood.bind(this)}>
-          <input type="radio" name="smiles" ref="smiles" checked={this.state.mood[0]} />:)
-          <input type="radio" name="indifferent" ref="indifferent" checked={this.state.mood[1]} />:|
-          <input type="radio" name="cry" ref="cry" checked={this.state.mood[2]} />:(
+        <div>
+          <Canvas ref="canvas" dim={this.props.dim} />
         </div>
-        <button>Add to set</button>
-      </form>
+        <button onClick={this.clearCanvas.bind(this)}>Clear</button>
 
-      <button onClick={this.train.bind(this)}>Train</button>
-      <button onClick={this.clearCanvas.bind(this)}>Clear</button>
+
+        <form onSubmit={this.pushToDataset.bind(this)}>
+          <div onClick={this.setMood.bind(this)}>
+            <input type="radio" name="smiles" ref="smiles" checked={this.state.mood[0]} />:)
+            <input type="radio" name="indifferent" ref="indifferent" checked={this.state.mood[1]} />:|
+            <input type="radio" name="cry" ref="cry" checked={this.state.mood[2]} />:(
+          </div>
+          <button>Add to set</button>
+        </form>
+
+        <button onClick={this.train.bind(this)}>Train</button>
+        <button onClick={this.run.bind(this)}>Run</button>
+      </div>
     </div>);
   }
 }
