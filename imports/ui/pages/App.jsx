@@ -33,7 +33,19 @@ export default class App extends React.Component {
   train() {
     global.net = new brain.NeuralNetwork();
 
-    console.log(net.train(this.state.dataset));
+    console.log(train = net.train(this.state.dataset));
+    alert(`
+
+      
+      Done!
+
+      Error: ${train.error}
+
+      Iterations: ${train.iterations}
+
+
+
+` );
   }
 
   run() {
