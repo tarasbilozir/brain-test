@@ -1,11 +1,11 @@
 import React from 'react';
 
-export default class Canvas extends React.Component {
+export default class SqrCanvas extends React.Component {
   constructor(props) {
     super(props);
 
-    this.ratio = this.props.dim / this.props.netInputDim,
-    console.log(this.ratio);
+    this.lineWidth = this.props.lineWidth,
+
     this.state = {
       isDrawing: false,
     }
@@ -21,9 +21,8 @@ export default class Canvas extends React.Component {
 
     ctx.moveTo(x,y);
 
-    ctx.fillRect(x - this.ratio / 2, y - this.ratio / 2, this.ratio, this.ratio);
+    ctx.fillRect(x - this.lineWidth / 2, y - this.lineWidth / 2, this.lineWidth, this.lineWidth);
     ctx.stroke();
-    ctx.lineJoin = ctx.lineCap = 'round';
 
 
   }
@@ -43,7 +42,7 @@ export default class Canvas extends React.Component {
         ',' + data[2] + ',' + (data[3] / 255) + ')';
       */
 
-      ctx.lineWidth = this.ratio;
+      ctx.lineWidth = this.lineWidth;
       ctx.lineJoin = ctx.lineCap = 'round';
       ctx.lineTo(x, y);
       ctx.stroke();
@@ -55,6 +54,9 @@ export default class Canvas extends React.Component {
     const ctx = this.refs.canvas.getContext('2d');
     // ctx.closePath();
     ctx.clearRect(0, 0, this.props.dim, this.props.dim);
+
+    this.refs.canvas.width = this.refs.canvas.width;
+
     ctx.beginPath(); // It necessary for correct clearing the canvas
 
 
@@ -66,21 +68,17 @@ export default class Canvas extends React.Component {
   getDataset() {
     const ctx = this.refs.canvas.getContext('2d');
 
-    const ctx2 = this.refs.canvas2.getContext('2d');
+    // const ctx2 = this.refs.canvas2.getContext('2d');
 
-    // E R R O R ! ! ! won't clear!
-    this.refs.canvas2.width = this.refs.canvas2.width; // Only this line fixed the issue with canvas2 clearing
-    // ctx2.beginPath(); // It necessary for correct clearing the canvas
-    // ctx2.clearRect(0, 0, this.props.netInputDim, this.props.netInputDim);
-    // ctx2.beginPath(); // It necessary for correct clearing the canvas
+    // this.refs.canvas2.width = this.refs.canvas2.width; // Only this line fixed the issue with canvas2 clearing
 
 
-    ctx2.scale(1 / this.ratio, 1 / this.ratio);
-    ctx2.drawImage(this.refs.canvas, 0, 0);
-    ctx2.stroke();
-    // ctx2.closePath();
+    // ctx2.scale(1 / this.lineWidth, 1 / this.lineWidth);
+    // ctx2.drawImage(this.refs.canvas, 0, 0);
+    // ctx2.stroke();
 
-    const canvasData = ctx2.getImageData(0,0,this.props.netInputDim,this.props.netInputDim);
+    // const canvasData = ctx2.getImageData(0,0,this.props.netInputDim,this.props.netInputDim);
+    const canvasData = ctx.getImageData(0,0,this.props.dim, this.props.dim);
 
 
 
@@ -107,6 +105,20 @@ export default class Canvas extends React.Component {
     return arr;
   }
 
+  fit(img, dim) {
+    const ctx = this.refs.canvas.getContext('2d');
+
+    // this.refs.canvas.width = this.refs.canvas.width; // Only this line fixed the issue with canvas2 clearing
+    // OR: this.clearCanvas();
+
+    console.log(img.refs.canvas, this.props.dim , dim);
+
+    ctx.scale(this.props.dim / dim, this.props.dim / dim);
+    ctx.drawImage(img.refs.canvas, 0, 0);
+    // ctx.drawImage(this.refs.canvas, 0, 0);
+    ctx.stroke();
+  }
+
   render() {
     return (<div>
       <canvas
@@ -119,12 +131,6 @@ export default class Canvas extends React.Component {
       >
       </canvas>
 
-      <canvas
-        id="canvas2" ref="canvas2"
-        width={this.props.netInputDim} height={this.props.netInputDim}
-        style={{"border": "1px solid black"}}
-      >
-      </canvas>
     </div>);
   }
 

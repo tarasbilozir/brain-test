@@ -1,5 +1,5 @@
 import React from 'react';
-import Canvas from '/imports/ui/components/Canvas.jsx';
+import SqrCanvas from '/imports/ui/components/SqrCanvas.jsx';
 import Radio from '/imports/ui/components/Radio.jsx';
 
 import brain from 'brain';
@@ -20,14 +20,26 @@ export default class App extends React.Component {
 
   pushToDataset() {
 
+    this.refs.canvas2.clearCanvas();
+
+
+    // console.log('--->', this.refs.canvas.getDataset());
+
+    this.refs.canvas2.fit(this.refs.canvas, this.props.dim);
+
+
+
     this.state.dataset.push({
-      input: this.refs.canvas.getDataset().map(item => item.a / 255),
+      input: this.refs.canvas2.getDataset().map(item => item.a / 255),
       output: this.refs.radio.getChoice()
     });
     console.log(this.state.dataset);
 
     // return arr;
-    this.clearCanvas();
+    // this.clearCanvas();
+
+    this.refs.canvas.clearCanvas();
+    // this.refs.canvas2.clearCanvas();
   }
 
   train() {
@@ -39,18 +51,19 @@ export default class App extends React.Component {
   run() {
     global.res = net.run(this.refs.canvas.getDataset().map(item => item.a / 255));
     console.log(res);
+
   }
 
   render() {
     return (<div className="container">
       <h1>Hello!</h1>
 
-      <Canvas ref="canvas" dim={this.props.dim} netInputDim={this.props.netInputDim} />
+      <SqrCanvas ref="canvas" dim={this.props.dim} lineWidth={7} />
       <button onClick={this.clearCanvas.bind(this)}>Clear</button>
 
       <Radio ref="radio" choice={[':)', ':|', ':(']} />
       <button onClick={this.pushToDataset.bind(this)}>Add to set</button>
-
+      <SqrCanvas ref="canvas2" dim={this.props.netInputDim} />
       <button onClick={this.train.bind(this)}>Train</button>
       <button onClick={this.run.bind(this)}>Run</button>
     </div>);
