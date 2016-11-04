@@ -27,14 +27,14 @@ export default class Canvas extends React.Component {
 
 
   render() {
-    return (<div>
+    return (<span>
       <span onClick={this.choose.bind(this)}>
         {this.props.choice.map((item, i) => (<span key={i}>
           <input type="radio" name={i} ref={i} checked={this.state.choice[i]} />
           {item}
         </span>))}
       </span>
-    </div>);
+    </span>);
   }
 
 }

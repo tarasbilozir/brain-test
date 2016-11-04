@@ -11,23 +11,13 @@ export default class App extends React.Component {
 
     this.state = {
       dataset: [],
+      result: [],
     }
-  }
-
-  clearCanvas() {
-    this.refs.canvas.clearCanvas();
   }
 
   pushToDataset() {
 
-    this.refs.canvas2.clearCanvas();
-
-
-    // console.log('--->', this.refs.canvas.getDataset());
-
     this.refs.canvas2.fit(this.refs.canvas, this.props.dim);
-
-
 
     this.state.dataset.push({
       input: this.refs.canvas2.getDataset().map(item => item.a / 255),
@@ -35,13 +25,9 @@ export default class App extends React.Component {
     });
     console.log(this.state.dataset);
 
-    console.log(this.refs.canvas2.getDataset().map((item,i)=> item.a));
-
-    // return arr;
-    // this.clearCanvas();
+    // console.log(this.refs.canvas2.getDataset().map((item,i)=> item.a));
 
     this.refs.canvas.clearCanvas();
-    // this.refs.canvas2.clearCanvas();
   }
 
   train() {
@@ -51,23 +37,37 @@ export default class App extends React.Component {
   }
 
   run() {
+
+    // this.refs.canvas2.clearCanvas();
+    this.refs.canvas2.fit(this.refs.canvas, this.props.dim);
+
+
     global.res = net.run(this.refs.canvas2.getDataset().map(item => item.a / 255));
     console.log(res);
-
+    this.setState({ result: res });
   }
 
   render() {
     return (<div className="container">
       <h1>Hello!</h1>
 
-      <SqrCanvas ref="canvas" dim={this.props.dim} lineWidth={5} />
-      <button onClick={this.clearCanvas.bind(this)}>Clear</button>
-
-      <Radio ref="radio" choice={[':)', ':|', ':(']} />
-      <button onClick={this.pushToDataset.bind(this)}>Add to set</button>
+      <div>
+        <SqrCanvas ref="canvas" dim={this.props.dim} lineWidth={7} />
+      </div>
       <SqrCanvas ref="canvas2" dim={this.props.netInputDim} />
+
+      <button onClick={() => { this.refs.canvas.clearCanvas() }}>Clear</button>
+
+      <div>
+        <Radio ref="radio" choice={[':)', ':|', ':(']} />
+      </div>
+
+      <button onClick={this.pushToDataset.bind(this)}>Add to set</button>
       <button onClick={this.train.bind(this)}>Train</button>
       <button onClick={this.run.bind(this)}>Run</button>
+      <ul>
+        {this.state.result.map((e, i) => <li key={i}><b>{[':)', ':|', ':('][i]}</b> {e}</li>)}
+      </ul>
     </div>);
   }
 }

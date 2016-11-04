@@ -108,10 +108,12 @@ export default class SqrCanvas extends React.Component {
   fit(img, dim) {
     const ctx = this.refs.canvas.getContext('2d');
 
+    this.clearCanvas(); // Before drawing
+
     // this.refs.canvas.width = this.refs.canvas.width; // Only this line fixed the issue with canvas2 clearing
     // OR: this.clearCanvas();
 
-    console.log(img.refs.canvas, this.props.dim , dim);
+    // console.log(img.refs.canvas, this.props.dim , dim);
 
     ctx.scale(this.props.dim / dim, this.props.dim / dim);
     ctx.drawImage(img.refs.canvas, 0, 0);
@@ -120,7 +122,7 @@ export default class SqrCanvas extends React.Component {
   }
 
   render() {
-    return (<div>
+    return (<span>
       <canvas
         id="canvas" ref="canvas"
         width={this.props.dim} height={this.props.dim}
@@ -131,7 +133,7 @@ export default class SqrCanvas extends React.Component {
       >
       </canvas>
 
-    </div>);
+    </span>);
   }
 
 }
