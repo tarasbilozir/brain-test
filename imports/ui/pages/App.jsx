@@ -35,6 +35,8 @@ export default class App extends React.Component {
     });
     console.log(this.state.dataset);
 
+    console.log(this.refs.canvas2.getDataset().map((item,i)=> item.a));
+
     // return arr;
     // this.clearCanvas();
 
@@ -49,7 +51,7 @@ export default class App extends React.Component {
   }
 
   run() {
-    global.res = net.run(this.refs.canvas.getDataset().map(item => item.a / 255));
+    global.res = net.run(this.refs.canvas2.getDataset().map(item => item.a / 255));
     console.log(res);
 
   }
@@ -58,7 +60,7 @@ export default class App extends React.Component {
     return (<div className="container">
       <h1>Hello!</h1>
 
-      <SqrCanvas ref="canvas" dim={this.props.dim} lineWidth={7} />
+      <SqrCanvas ref="canvas" dim={this.props.dim} lineWidth={5} />
       <button onClick={this.clearCanvas.bind(this)}>Clear</button>
 
       <Radio ref="radio" choice={[':)', ':|', ':(']} />
