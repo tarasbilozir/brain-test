@@ -11,9 +11,6 @@ export default class Canvas extends React.Component {
 
   choose(event) {
     event.persist();
-    // global.e = event;
-
-    console.log(event.target.name , this.props.choice.map((item, i) => event.target.name == i && 1 || 0));
 
     this.setState({
       choice: this.props.choice.map((item, i) => event.target.name == i && 1 || 0),
@@ -24,7 +21,6 @@ export default class Canvas extends React.Component {
   getChoice() {
     return this.state.choice;
   }
-
 
   render() {
     return (<span>

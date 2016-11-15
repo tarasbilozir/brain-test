@@ -12,6 +12,7 @@ export default class App extends React.Component {
     this.state = {
       dataset: [],
       result: [],
+      answer: -1,
     }
   }
 
@@ -50,12 +51,19 @@ export default class App extends React.Component {
     this.refs.canvas2.fit(this.refs.canvas, this.props.dim);
 
 
-    global.res = net.run(this.refs.canvas2.getDataset().map(item => item.a / 255));
-    console.log(res);
-    this.setState({ result: res });
+    const result = net.run(this.refs.canvas2.getDataset().map(item => item.a / 255));
+    console.log(result);
+    this.setState({
+      result: result,
+      answer: result.reduce((prev, curr, i) => curr > prev[0] ? [curr, i] : prev, [-1, -1])[1],
+    });
+
+    global.res = result;
   }
 
   render() {
+    console.log(this.state.answer);
+
     return (<div className="container">
       <h1>Smile recognition</h1>
       <p>try to train net with correct answers</p>
@@ -66,7 +74,7 @@ export default class App extends React.Component {
       </div>
 
       <div>
-        <Radio ref="radio" choice={[':)', ':|', ':(']} />
+        <Radio ref="radio" choice={[':)', ':|', ':(']} />&nbsp;
         <button onClick={this.pushToDataset.bind(this)}>Add to set</button>
         <button onClick={this.train.bind(this)}>Train</button>
       </div>
@@ -75,8 +83,12 @@ export default class App extends React.Component {
       <button onClick={this.run.bind(this)}>Run</button>
 
       <ul className="unstiled">
-        {this.state.result.map((e, i) => (<li key={i}>
-          <b>{[':)', ':|', ':('][i]}</b> {(e * 100).toFixed(1)}%
+        {this.state.result.map((item, i) => (<li key={i}>
+          <b className={i === this.state.answer ? "answer" : "smile"}>
+            {[':)', ':|', ':('][i]}
+          </b>
+          &nbsp;
+          {(item * 100).toFixed(1)}%
         </li>))}
       </ul>
     </div>);

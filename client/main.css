@@ -15,3 +15,21 @@ body {
 ul.unstiled {
   list-style-type: none;
 }
+
+.answer {
+  display: inline-block;
+  border-radius: 40%;
+  padding: 10px;
+
+  color: white;
+  background-color: green;
+}
+
+.smile {
+  display: inline-block;
+  border-radius: 40%;
+  padding: 10px;
+
+  color: black;
+  background-color: lightgray;
+}
