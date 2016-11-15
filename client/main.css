@@ -19,7 +19,7 @@ ul.unstiled {
 .answer {
   display: inline-block;
   border-radius: 40%;
-  padding: 10px;
+  padding: 5px;
 
   color: white;
   background-color: green;
@@ -28,7 +28,7 @@ ul.unstiled {
 .smile {
   display: inline-block;
   border-radius: 40%;
-  padding: 10px;
+  padding: 5px;
 
   color: black;
   background-color: lightgray;
