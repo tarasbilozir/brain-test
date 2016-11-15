@@ -12,7 +12,7 @@ export default class SqrCanvas extends React.Component {
   }
 
   startPaint(event) {
-    this.setState({ isDrawing: true });
+    if (this.lineWidth) this.setState({ isDrawing: true });
 
     const ctx = this.refs.canvas.getContext('2d');
 
@@ -35,13 +35,6 @@ export default class SqrCanvas extends React.Component {
       const x = event.nativeEvent.offsetX;
       const y = event.nativeEvent.offsetY;
 
-      /*
-      const pixel = ctx.getImageData(x, y, 1, 1);
-      const data = pixel.data;
-      const rgba = 'rgba(' + data[0] + ',' + data[1] +
-        ',' + data[2] + ',' + (data[3] / 255) + ')';
-      */
-
       ctx.lineWidth = this.lineWidth;
       ctx.lineJoin = ctx.lineCap = 'round';
       ctx.lineTo(x, y);
@@ -55,32 +48,15 @@ export default class SqrCanvas extends React.Component {
     // ctx.closePath();
     ctx.clearRect(0, 0, this.props.dim, this.props.dim);
 
-    this.refs.canvas.width = this.refs.canvas.width;
+    this.refs.canvas.width = this.refs.canvas.width; // Only this line fixed the issue with canvas2 clearing
 
     ctx.beginPath(); // It necessary for correct clearing the canvas
-
-
-    // const
-
-    // console.log(ctx2.clearRect(0, 0, this.props.netInputDim, this.props.netInputDim));
   }
 
   getDataset() {
     const ctx = this.refs.canvas.getContext('2d');
 
-    // const ctx2 = this.refs.canvas2.getContext('2d');
-
-    // this.refs.canvas2.width = this.refs.canvas2.width; // Only this line fixed the issue with canvas2 clearing
-
-
-    // ctx2.scale(1 / this.lineWidth, 1 / this.lineWidth);
-    // ctx2.drawImage(this.refs.canvas, 0, 0);
-    // ctx2.stroke();
-
-    // const canvasData = ctx2.getImageData(0,0,this.props.netInputDim,this.props.netInputDim);
-    const canvasData = ctx.getImageData(0,0,this.props.dim, this.props.dim);
-
-
+    const canvasData = ctx.getImageData(0, 0, this.props.dim, this.props.dim);
 
     const pixels = canvasData.data;
     const w = canvasData.width;
@@ -105,31 +81,32 @@ export default class SqrCanvas extends React.Component {
     return arr;
   }
 
+  /**
+   * Fit image 'img' with 'dim' dimension to current canvas
+   */
   fit(img, dim) {
     const ctx = this.refs.canvas.getContext('2d');
 
     this.clearCanvas(); // Before drawing
 
-    // this.refs.canvas.width = this.refs.canvas.width; // Only this line fixed the issue with canvas2 clearing
-    // OR: this.clearCanvas();
-
-    // console.log(img.refs.canvas, this.props.dim , dim);
-
     ctx.scale(this.props.dim / dim, this.props.dim / dim);
     ctx.drawImage(img.refs.canvas, 0, 0);
-    // ctx.drawImage(this.refs.canvas, 0, 0);
     ctx.stroke();
   }
 
   render() {
     return (<span>
       <canvas
-        id="canvas" ref="canvas"
+        ref="canvas"
         width={this.props.dim} height={this.props.dim}
-        style={{"border": "1px solid black"}}
         onMouseDown={this.startPaint.bind(this)}
         onMouseMove={this.paint.bind(this)}
         onMouseUp={() => this.setState({ isDrawing: false })}
+        style={{
+          cursor: "pointer",
+          zIndex: 100,
+          border: "1px solid black",
+        }}
       >
       </canvas>
 

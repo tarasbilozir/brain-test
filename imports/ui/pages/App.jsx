@@ -36,21 +36,17 @@ export default class App extends React.Component {
     console.log(train = net.train(this.state.dataset));
     alert(`
 
-      
       Done!
 
       Error: ${train.error}
 
       Iterations: ${train.iterations}
 
-
-
 ` );
   }
 
   run() {
 
-    // this.refs.canvas2.clearCanvas();
     this.refs.canvas2.fit(this.refs.canvas, this.props.dim);
 
 
@@ -61,22 +57,23 @@ export default class App extends React.Component {
 
   render() {
     return (<div className="container">
-      <h1>Hello!</h1>
+      <h1>Smile recognition</h1>
+      <p>try to train net with correct answers</p>
 
       <div>
-        <SqrCanvas ref="canvas" dim={this.props.dim} lineWidth={7} />
+        <SqrCanvas ref="canvas" dim={this.props.dim} lineWidth={6} />
+        <SqrCanvas ref="canvas2" dim={this.props.netInputDim} />
       </div>
-      <SqrCanvas ref="canvas2" dim={this.props.netInputDim} />
-
-      <button onClick={() => { this.refs.canvas.clearCanvas() }}>Clear</button>
 
       <div>
         <Radio ref="radio" choice={[':)', ':|', ':(']} />
+        <button onClick={this.pushToDataset.bind(this)}>Add to set</button>
+        <button onClick={this.train.bind(this)}>Train</button>
       </div>
 
-      <button onClick={this.pushToDataset.bind(this)}>Add to set</button>
-      <button onClick={this.train.bind(this)}>Train</button>
+      <button onClick={() => { this.refs.canvas.clearCanvas() }}>Clear</button>
       <button onClick={this.run.bind(this)}>Run</button>
+
       <ul>
         {this.state.result.map((e, i) => <li key={i}><b>{[':)', ':|', ':('][i]}</b> {e}</li>)}
       </ul>
