@@ -74,8 +74,10 @@ export default class App extends React.Component {
       <button onClick={() => { this.refs.canvas.clearCanvas() }}>Clear</button>
       <button onClick={this.run.bind(this)}>Run</button>
 
-      <ul>
-        {this.state.result.map((e, i) => <li key={i}><b>{[':)', ':|', ':('][i]}</b> {e}</li>)}
+      <ul className="unstiled">
+        {this.state.result.map((e, i) => (<li key={i}>
+          <b>{[':)', ':|', ':('][i]}</b> {(e * 100).toFixed(1)}%
+        </li>))}
       </ul>
     </div>);
   }

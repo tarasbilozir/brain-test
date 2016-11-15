@@ -11,3 +11,7 @@ body {
   max-width: 300px;
   margin: 0 auto;
 }
+
+ul.unstiled {
+  list-style-type: none;
+}
