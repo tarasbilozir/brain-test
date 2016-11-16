@@ -81,14 +81,18 @@ export default class App extends React.Component {
         <div>
           <div>
             <SqrCanvas ref="canvas" dim={this.props.dim} lineWidth={6} />
+            <span className="hidden">
+              <SqrCanvas ref="canvas2" dim={this.props.netInputDim} />
+            </span>
           </div>
 
           <div>
             <button onClick={() => { this.refs.canvas.clearCanvas() }}>Clear</button>
-            <button onClick={this.run.bind(this)}>Run</button>
-            <span className="hidden">
-              <SqrCanvas ref="canvas2" dim={this.props.netInputDim} />
-            </span>
+            <button
+              onClick={this.run.bind(this)}
+            >
+              Run
+            </button>
           </div>
 
           <ul className="unstiled">
