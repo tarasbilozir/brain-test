@@ -12,6 +12,7 @@ export default class App extends React.Component {
 
     this.state = {
       dataset: [],
+      dataCount: 0,
       result: [],
       answer: -1,
     }
@@ -26,32 +27,43 @@ export default class App extends React.Component {
       input: this.refs.canvas2.getDataset().map(item => item.a / 255),
       output: choice
     });
-    console.log(this.state.dataset);
+
+    this.setState({ dataCount: this.state.dataset.length });
+    console.log(this.state.dataset, this.state.dataCount);
 
     this.refs.canvas.clearCanvas();
   }
 
   train() {
+    const timerStart = Date.now();
+
     global.net = new brain.NeuralNetwork();
     const train = net.train(this.state.dataset);
-
-    alert(`\nDone!\nTrain error: ${train.error}\nIterations: ${train.iterations}\n`);
+    this.trainAlert(train, timerStart);
+    // alert(`\nDone!\nTrain error: ${train.error}\nIterations: ${train.iterations}\nDuration: ${Math.round((Date.now() - timerStart) / 1000)} s\n`);
   }
 
   trainOnServer() {
+    const timerStart = Date.now();
+
     Meteor.call('train', this.state.dataset, (err, { netJSON, train }) => {
       global.net = new brain.NeuralNetwork();
       net.fromJSON(netJSON);
 
-      alert(`\nDone!\nTrain error: ${train.error}\nIterations: ${train.iterations}\n`);
+      // Object.keys(x).map(item => x[item]);
+      this.trainAlert(train, timerStart);
+      // alert(`\nDone!\nTrain error: ${train.error}\nIterations: ${train.iterations}\nDuration: ${Math.round((Date.now() - timerStart) / 1000)} s\n`);
     });
+  }
+
+  trainAlert(train, timerStart) {
+    alert(`\nDone!\nTrain error: ${train.error}\nIterations: ${train.iterations}\nDuration: ${Math.round((Date.now() - timerStart) / 1000)} s\n`);
   }
 
   run() {
     this.refs.canvas2.fit(this.refs.canvas, this.props.dim);
 
     const result = net.run(this.refs.canvas2.getDataset().map(item => item.a / 255));
-    console.log(result);
     this.setState({
       result: result,
       answer: result.reduce((prev, curr, i) => curr > prev[0] ? [curr, i] : prev, [-1, -1])[1],
@@ -61,39 +73,52 @@ export default class App extends React.Component {
   }
 
   render() {
-    return (<div className="container">
+    return (<div className="outer"><div className="container" >
       <h1>Smile recognition</h1>
       <p>try to train net with correct answers</p>
 
-      <div>
-        <SqrCanvas ref="canvas" dim={this.props.dim} lineWidth={6} />
+      <div className="flexbox-parent">
+        <div>
+          <div>
+            <SqrCanvas ref="canvas" dim={this.props.dim} lineWidth={6} />
+          </div>
+
+          <div>
+            <button onClick={() => { this.refs.canvas.clearCanvas() }}>Clear</button>
+            <button onClick={this.run.bind(this)}>Run</button>
+            <span className="hidden">
+              <SqrCanvas ref="canvas2" dim={this.props.netInputDim} />
+            </span>
+          </div>
+
+          <ul className="unstiled">
+            {this.state.result.map((item, i) => (<li key={i}>
+              <b className={i === this.state.answer ? "answer" : "smile"}>
+                {[':)', ':|', ':('][i]}
+              </b>
+              &nbsp;
+              {(item * 100).toFixed(0)}<small>%</small>
+            </li>))}
+          </ul>
+        </div>
+
+        <div>
+          <div title="Manual recognize">
+            <ChoiceButtons
+              options={[':)', ':|', ':(']}
+              returnTo={this.pushToDataset.bind(this)}
+            />
+            &nbsp;
+            {this.state.dataCount || ''}
+          </div>
+
+          <div>
+            <button onClick={this.train.bind(this)}>Train</button>
+            <button onClick={this.trainOnServer.bind(this)}>Train on Server</button>
+          </div>
+        </div>
       </div>
 
-      <div>
-        <button onClick={() => { this.refs.canvas.clearCanvas() }}>Clear</button>
-        <button onClick={this.run.bind(this)}>Run</button>
-        <SqrCanvas ref="canvas2" dim={this.props.netInputDim} />
-      </div>
-
-      <ul className="unstiled">
-        {this.state.result.map((item, i) => (<li key={i}>
-          <b className={i === this.state.answer ? "answer" : "smile"}>
-            {[':)', ':|', ':('][i]}
-          </b>
-          &nbsp;
-          {(item * 100).toFixed(1)}<small>%</small>
-        </li>))}
-      </ul>
-
-      <div title="Manual recognize">
-        <ChoiceButtons options={[':)', ':|', ':(']} returnTo={this.pushToDataset.bind(this)} />
-      </div>
-
-      <div>
-        <button onClick={this.train.bind(this)}>Train</button>
-        <button onClick={this.trainOnServer.bind(this)}>Train on Server</button>
-      </div>
-
-    </div>);
+    </div></div>);
   }
 }

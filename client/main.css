@@ -7,9 +7,20 @@ body {
 }
 
 .container {
-  /*display: inline-block;*/
-  max-width: 300px;
+  display: inline-block;
+  max-width: 200px;
   margin: 0 auto;
+
+  text-align: left;
+}
+
+.outer {
+  text-align: center;
+}
+
+.flexbox-parent {
+  /*display: flex;
+  flex-flow: row;*/
 }
 
 ul.unstiled {
@@ -32,4 +43,8 @@ ul.unstiled {
 
   color: black;
   background-color: lightgray;
+}
+
+.hidden {
+  display: none;
 }
