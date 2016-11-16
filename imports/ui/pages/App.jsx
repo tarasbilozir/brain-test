@@ -69,7 +69,7 @@ export default class App extends React.Component {
         <SqrCanvas ref="canvas2" dim={this.props.netInputDim} />
       </div>
 
-      <div>
+      <div title="Manual recognize">
         {/*
           <Radio ref="radio" choice={[':)', ':|', ':(']} />&nbsp;
           <button onClick={this.pushToDataset.bind(this)}>Add to set</button>
@@ -95,7 +95,7 @@ export default class App extends React.Component {
             {[':)', ':|', ':('][i]}
           </b>
           &nbsp;
-          {(item * 100).toFixed(1)}%
+          {(item * 100).toFixed(1)}<small>%</small>
         </li>))}
       </ul>
     </div>);
