@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import SqrCanvas from '/imports/ui/components/SqrCanvas.jsx';
-import Radio from '/imports/ui/components/Radio.jsx';
+import ChoiceButtons from '/imports/ui/components/ChoiceButtons.jsx';
 
 import brain from 'brain';
 
@@ -17,7 +17,8 @@ export default class App extends React.Component {
     }
   }
 
-  pushToDataset(choice = this.refs.radio.getChoice()) {
+  pushToDataset(choice) {
+    console.log('App-->',choice);
 
     this.refs.canvas2.fit(this.refs.canvas, this.props.dim);
 
@@ -66,27 +67,12 @@ export default class App extends React.Component {
 
       <div>
         <SqrCanvas ref="canvas" dim={this.props.dim} lineWidth={6} />
-        <SqrCanvas ref="canvas2" dim={this.props.netInputDim} />
-      </div>
-
-      <div title="Manual recognize">
-        {/*
-          <Radio ref="radio" choice={[':)', ':|', ':(']} />&nbsp;
-          <button onClick={this.pushToDataset.bind(this)}>Add to set</button>
-        */}
-        <button onClick={this.pushToDataset.bind(this, [1, 0, 0])}>:)</button>
-        <button onClick={this.pushToDataset.bind(this, [0, 1, 0])}>:|</button>
-        <button onClick={this.pushToDataset.bind(this, [0, 0, 1])}>:(</button>
-      </div>
-
-      <div>
-        <button onClick={this.train.bind(this)}>Train</button>
-        <button onClick={this.trainOnServer.bind(this)}>Train on Server</button>
       </div>
 
       <div>
         <button onClick={() => { this.refs.canvas.clearCanvas() }}>Clear</button>
         <button onClick={this.run.bind(this)}>Run</button>
+        <SqrCanvas ref="canvas2" dim={this.props.netInputDim} />
       </div>
 
       <ul className="unstiled">
@@ -98,6 +84,16 @@ export default class App extends React.Component {
           {(item * 100).toFixed(1)}<small>%</small>
         </li>))}
       </ul>
+
+      <div title="Manual recognize">
+        <ChoiceButtons options={[':)', ':|', ':(']} returnTo={this.pushToDataset.bind(this)} />
+      </div>
+
+      <div>
+        <button onClick={this.train.bind(this)}>Train</button>
+        <button onClick={this.trainOnServer.bind(this)}>Train on Server</button>
+      </div>
+
     </div>);
   }
 }

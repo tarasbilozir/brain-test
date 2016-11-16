@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class Canvas extends React.Component {
+export default class Radio extends React.Component {
   constructor(props) {
     super(props);
 
