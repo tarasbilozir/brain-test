@@ -2,9 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import SqrCanvas from '/imports/ui/components/SqrCanvas.jsx';
 import ChoiceButtons from '/imports/ui/components/ChoiceButtons.jsx';
-
 import brain from 'brain';
-
 
 export default class App extends React.Component {
   constructor(props) {
@@ -19,8 +17,7 @@ export default class App extends React.Component {
   }
 
   pushToDataset(choice) {
-    console.log('App-->',choice);
-
+    // console.log('App-->',choice);
     this.refs.canvas2.fit(this.refs.canvas, this.props.dim);
 
     this.state.dataset.push({
@@ -29,7 +26,7 @@ export default class App extends React.Component {
     });
 
     this.setState({ dataCount: this.state.dataset.length });
-    console.log(this.state.dataset, this.state.dataCount);
+    // console.log(this.state.dataset, this.state.dataCount);
 
     this.refs.canvas.clearCanvas();
   }
@@ -40,7 +37,6 @@ export default class App extends React.Component {
     global.net = new brain.NeuralNetwork();
     const train = net.train(this.state.dataset);
     this.trainAlert(train, timerStart);
-    // alert(`\nDone!\nTrain error: ${train.error}\nIterations: ${train.iterations}\nDuration: ${Math.round((Date.now() - timerStart) / 1000)} s\n`);
   }
 
   trainOnServer() {
@@ -52,7 +48,6 @@ export default class App extends React.Component {
 
       // Object.keys(x).map(item => x[item]);
       this.trainAlert(train, timerStart);
-      // alert(`\nDone!\nTrain error: ${train.error}\nIterations: ${train.iterations}\nDuration: ${Math.round((Date.now() - timerStart) / 1000)} s\n`);
     });
   }
 
@@ -87,7 +82,9 @@ export default class App extends React.Component {
           </div>
 
           <div>
-            <button onClick={() => { this.refs.canvas.clearCanvas() }}>Clear</button>
+            <button onClick={() => { this.refs.canvas.clearCanvas() }}>
+              Clear
+            </button>
             <button
               onClick={this.run.bind(this)}
               title="First you should train the net"
