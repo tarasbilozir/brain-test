@@ -81,7 +81,7 @@ export default class App extends React.Component {
         <div>
           <div>
             <SqrCanvas ref="canvas" dim={this.props.dim} lineWidth={6} />
-            <span className="hidden">
+            <span className="">
               <SqrCanvas ref="canvas2" dim={this.props.netInputDim} />
             </span>
           </div>
@@ -91,7 +91,7 @@ export default class App extends React.Component {
             <button
               onClick={this.run.bind(this)}
             >
-              Run
+              Try to recognize
             </button>
           </div>
 
@@ -108,6 +108,7 @@ export default class App extends React.Component {
 
         <div>
           <div title="Manual recognize">
+            Answer:&nbsp;
             <ChoiceButtons
               options={[':)', ':|', ':(']}
               returnTo={this.pushToDataset.bind(this)}
