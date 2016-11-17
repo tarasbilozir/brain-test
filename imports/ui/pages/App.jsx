@@ -90,6 +90,7 @@ export default class App extends React.Component {
             <button onClick={() => { this.refs.canvas.clearCanvas() }}>Clear</button>
             <button
               onClick={this.run.bind(this)}
+              title="First you should train the net"
             >
               Try to recognize
             </button>
@@ -117,7 +118,9 @@ export default class App extends React.Component {
             {this.state.dataCount || ''}
           </div>
 
-          <div>
+          <div
+            title="First you have to add correct answers manually"
+          >
             <button onClick={this.train.bind(this)}>Train</button>
             <button onClick={this.trainOnServer.bind(this)}>Train on Server</button>
           </div>
